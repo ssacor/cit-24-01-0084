@@ -1,0 +1,30 @@
+# OPTIONAL file. This does the same thing as the four bash scripts,
+# but in one command. Only needed if you also want to demonstrate Docker Compose.
+# Run with:  docker compose up -d
+# Stop with: docker compose down
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: visits
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  visit-counter-app:
+    build: ./app
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql-db
+      DB_PASSWORD: rootpass
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql-db
+
+volumes:
+  mysql_data:
