@@ -1,0 +1,24 @@
+# Part 7 — Cache tier
+# Redis in-memory cache. Stateless (data is temporary),
+# so we use a Deployment with 1 replica.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache
+  labels:
+    app: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+        - name: cache
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379

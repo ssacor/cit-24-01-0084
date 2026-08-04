@@ -1,0 +1,17 @@
+# Part 2 — Your First Pod
+# A Pod is the smallest thing Kubernetes runs.
+# This creates ONE pod running nginx on port 80.
+# This is a DEMO pod for Part 2 only. In real apps you use a
+# Deployment (which manages many pods), not a bare Pod.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  containers:
+    - name: frontend
+      image: nginx:alpine
+      ports:
+        - containerPort: 80

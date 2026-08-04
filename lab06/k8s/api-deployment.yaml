@@ -1,0 +1,24 @@
+# Part 7 — API tier
+# Runs the httpbin REST test API. Stateless (no saved data),
+# so we use a Deployment with 2 replicas.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: kennethreitz/httpbin
+          ports:
+            - containerPort: 80

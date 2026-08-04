@@ -1,0 +1,25 @@
+# Part 3 — From Pod to Deployment (Self-Healing)
+# A Deployment is the "boss" of a Pod. It keeps the number of pods
+# you ask for (replicas) running all the time. If one pod dies,
+# the Deployment makes a new one automatically.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: nginx:alpine
+          ports:
+            - containerPort: 80

@@ -1,0 +1,14 @@
+# Part 9 — A pod that is deliberately broken
+# The image tag "definitely-not-a-real-tag" does not exist on Docker Hub.
+# Kubernetes will try to pull it, fail, and show ImagePullBackOff.
+# Use this ONLY for Part 9, then delete it before finishing.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-pod
+  labels:
+    app: broken
+spec:
+  containers:
+    - name: broken
+      image: nginx:definitely-not-a-real-tag

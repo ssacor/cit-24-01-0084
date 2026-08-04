@@ -1,0 +1,15 @@
+# Part 7 — Service for the cache tier
+# ClusterIP = internal-only service. Reachable only inside the cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-service
+  labels:
+    app: cache
+spec:
+  type: ClusterIP
+  selector:
+    app: cache
+  ports:
+    - port: 6379
+      targetPort: 6379

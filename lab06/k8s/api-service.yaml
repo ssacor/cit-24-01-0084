@@ -1,0 +1,16 @@
+# Part 7 — Service for the API tier
+# ClusterIP = internal-only service. Other pods inside the cluster
+# can reach it, but it is NOT exposed to your browser.
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  labels:
+    app: api
+spec:
+  type: ClusterIP
+  selector:
+    app: api
+  ports:
+    - port: 80
+      targetPort: 80

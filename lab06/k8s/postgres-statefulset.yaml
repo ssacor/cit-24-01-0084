@@ -1,0 +1,44 @@
+# Part 7 — Database tier (StatefulSet + Persistent Volume)
+# The database MUST keep its data, so we use a StatefulSet instead
+# of a Deployment. A StatefulSet gives the pod:
+#   - a STABLE name (postgres-0)
+#   - a STABLE disk (via volumeClaimTemplate + PVC)
+#   - ordered startup/shutdown
+# The volumeClaimTemplate asks Kubernetes to create a PersistentVolumeClaim
+# (PVC) of 1Gi automatically and mount it at /var/lib/postgresql/data.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres-service   # must match the headless Service name
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: lab6password   # choose any password you like
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data   # where postgres saves data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
